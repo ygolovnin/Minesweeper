@@ -23,15 +23,15 @@ void MineSweeper::SetConfig() {
 	}
 
 	std::string s;
-	//std::ifstream file("field.txt");
+	std::ifstream file("field.txt");
 	std::vector<int> tmp;
 	int k = 0;
 	for (int i = 0; i < Y; ++i) {
 #ifdef DEBUG
 		std::cout << "i= " << i << std::endl;
 #endif //DEBUG
-		//getline(file, s);
-		std::cin >> s;
+		getline(file, s);
+		//std::cin >> s;
 #ifdef DEBUG
 		std::cout << "s= " << s << std::endl;
 #endif // DEBUG
@@ -89,6 +89,7 @@ void MineSweeper::SetConfig() {
 		g.printGroup();
 	}
 	sortGroups();
+	std::cout << "this->Groups.size() = " << this->Groups.size() << std::endl;
 	for (auto &g : this->Groups) {
 		g.printGroup();
 	}
@@ -179,16 +180,25 @@ void MineSweeper::FindNextCoords() {
 					overlap.printGroup();
 #endif // DEBUG
 					if ((overlap.NofM == overlap.UC.size()) || (overlap.NofM == 0)) {
-						
+						this->Groups.push_back(overlap);
+						big.subtraction(overlap);
+						small.subtraction(overlap);
+						res = true;
 					}
-					this->Groups.push_back(overlap);
-					big.subtraction(overlap);
-					small.subtraction(overlap);
-					res = true;
+					
 				}
 				
 			}
+#ifdef DEBUG
+			std::cout << "this->Groups.size() = " << this->Groups.size() << std::endl;
+			system("pause");
+#endif // DEBUG
 		}
+#ifdef DEBUG
+		std::cout << "counter = " << counter << ", Groups.size() = " << this->Groups.size() << std::endl;
+		system("pause");
+#endif // DEBUG
+
 		if (counter == this->Groups.size()) {
 			res = false;
 		}

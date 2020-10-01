@@ -51,11 +51,13 @@ bool Group::operator<(const Group &A) const {
 }
 
 bool Group::isContains(Group &A) {
-	auto it = std::search(this->UC.begin(), this->UC.end(), A.UC.begin(), A.UC.end());
-	if (it != this->UC.end()) {
-		return true;
+	for (auto &a : A.UC) {
+		auto it = std::find(this->UC.begin(), this->UC.end(), a);
+		if (it == this->UC.end()) {
+			return false;
+		}
 	}
-	return false;
+	return true;
 }
 
 bool Group::isOverlap(Group &A) {
@@ -65,8 +67,12 @@ bool Group::isOverlap(Group &A) {
 }
 
 void Group::subtraction(Group &A) {
-	auto it = std::search(this->UC.begin(), this->UC.end(), A.UC.begin(), A.UC.end());
-	this->UC.erase(it, it + A.UC.size());
+	for (auto &a : A.UC) {
+		auto it = std::find(this->UC.begin(), this->UC.end(), a);
+		this->UC.erase(it);
+	}
+	//auto it = std::search(this->UC.begin(), this->UC.end(), A.UC.begin(), A.UC.end());
+	//this->UC.erase(it, it + A.UC.size());
 	this->NofM -= A.NofM;
 }
 
